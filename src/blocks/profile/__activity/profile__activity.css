@@ -1,0 +1,21 @@
+.profile__activity {
+  margin: 0 0;
+  padding: 0 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 398px;
+}
+
+@media (max-width: 899px) {
+  .profile__activity {
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    max-width: 100%;
+  }
+}

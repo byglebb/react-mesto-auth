@@ -1,0 +1,43 @@
+.profile__avatar-shell {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+
+.profile__avatar-shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  background-image: url(../../../images/Edit_avatar.svg);
+  background-size: 26px 26px;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  z-index: 3;
+}
+
+.profile__avatar-shell:hover::before {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.profile__avatar-shell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  z-index: 2;
+}
+
+.profile__avatar-shell:hover::after {
+  opacity: .8;
+}

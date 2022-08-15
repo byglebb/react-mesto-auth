@@ -1,0 +1,16 @@
+.profile__name-change {
+  display: flex;
+  gap: 18px;
+}
+
+@media (max-width: 899px) {
+  .profile__name-change {
+    display: grid;
+    grid-template-columns: fit-content(500px) 1fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    max-width: 100%;
+    gap: 10px;
+    box-sizing: border-box;
+  }
+}

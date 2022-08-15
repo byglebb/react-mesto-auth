@@ -1,0 +1,66 @@
+.popup__close-button {
+  position: absolute;
+  padding: 0 0;
+  margin: 0 0;
+  right: -40px;
+  top: -40px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  height: 32px;
+  width: 32px;
+  background-image: url(../../../images/Close_button.svg);
+}
+
+/* В вебинаре наставник говорил, что ревьюер похвалит за такой вариант решения :))*/
+
+/* .popup__close-button:before {
+  position: absolute;
+  content: '';
+  height: 32px;
+  border: 2px solid white;
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.popup__close-button:after {
+  position: absolute;
+  content: '';
+  height: 32px;
+  border: 2px solid white;
+  top: 0;
+  transform: rotate(-45deg);
+} */
+
+@media (max-width: 899px) {
+  .popup__close-button {
+    right: 0px;
+    top: -36px;
+    height: 20px;
+    width: 20px;
+    background-size: 20px;
+  }
+
+  /* .popup__close-button:before {
+    position: absolute;
+    content: '';
+    height: 20px;
+    border: 1px solid white;
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .popup__close-button:after {
+    position: absolute;
+    content: '';
+    height: 20px;
+    border: 1px solid white;
+    top: 0;
+    transform: rotate(-45deg);
+  } */
+}
+
+.popup__close-button:hover {
+  opacity: .6;
+  transition: .5s;
+}
