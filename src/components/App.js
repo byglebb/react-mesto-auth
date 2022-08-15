@@ -9,6 +9,9 @@ import api from '../utils/Api';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import * as auth from '../utils/Auth';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -18,6 +21,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isValid, setIsValid] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     api.getUserInfo()
@@ -118,46 +123,73 @@ function App() {
       });
   }
 
+  function tokenCheck() {
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
+      auth.getContent(jwt)
+        .then(res => {
+          if (res) {
+            setIsLoggedIn(true);
+            history.push('/');
+          }
+        })
+        .catch((err) => {
+          console.log('Ошибка. Запрос не выполнен: ', err);
+        });
+    }
+  }
+
+  useEffect(() => {
+    tokenCheck();
+  }, [isLoggedIn])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main
-          onEditProfile={openEditProfilePopup}
-          onAddPlace={openAddPlacePopup}
-          onEditAvatar={openEditAvatarPopup}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          cards={cards}
-        />
-        <Footer />
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          valid={isValid} />
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-          valid={isValid}
-          setValid={handleValid} />
-        <PopupWithForm
-          name="confirmation"
-          title="Вы уверены?"
-          submitButton="Да"
-        />
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-          valid={isValid}
-          setValid={handleValid} />
-        <ImagePopup
-          card={selectedCard}
-          onClose={closeAllPopups}
-        />
+        <Switch>
+          <ProtectedRoute exact path="/" isLoggedIn={isLoggedIn} component={
+            <>
+              <Main
+                onEditProfile={openEditProfilePopup}
+                onAddPlace={openAddPlacePopup}
+                onEditAvatar={openEditAvatarPopup}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                cards={cards}
+              />
+              <Footer />
+              <EditProfilePopup
+                isOpen={isEditProfilePopupOpen}
+                onClose={closeAllPopups}
+                onUpdateUser={handleUpdateUser}
+                valid={isValid} />
+              <AddPlacePopup
+                isOpen={isAddPlacePopupOpen}
+                onClose={closeAllPopups}
+                onAddPlace={handleAddPlaceSubmit}
+                valid={isValid}
+                setValid={handleValid} />
+              <PopupWithForm
+                name="confirmation"
+                title="Вы уверены?"
+                submitButton="Да"
+              />
+              <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                onUpdateAvatar={handleUpdateAvatar}
+                valid={isValid}
+                setValid={handleValid} />
+              <ImagePopup
+                card={selectedCard}
+                onClose={closeAllPopups}
+              />
+            </>
+          }>
+          </ProtectedRoute>
+        </Switch>
       </div>
     </CurrentUserContext.Provider>
   );
