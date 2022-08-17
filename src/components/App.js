@@ -9,9 +9,10 @@ import api from '../utils/Api';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import * as auth from '../utils/Auth';
+import Login from './Login';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -189,6 +190,16 @@ function App() {
             </>
           }>
           </ProtectedRoute>
+          <Route path="/sign-in">
+            <Login
+              name="confirmation"
+              title="Вход"
+              submitButton="Войти"
+              valid={isValid}
+            />
+          </Route>
+          <Route path="/sign-up">
+          </Route>
         </Switch>
       </div>
     </CurrentUserContext.Provider>
