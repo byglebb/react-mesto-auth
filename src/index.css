@@ -66,3 +66,5 @@
 @import url(./blocks/login/__input-error/login__input-error.css);
 @import url(./blocks/login/__submit-button/login__submit-button.css);
 @import url(./blocks/login/__submit-button/_disabled/login__submit-button_disabled.css);
+@import url(./blocks/login/__check/login__check.css);
+@import url(./blocks/login/__link/login__link.css);

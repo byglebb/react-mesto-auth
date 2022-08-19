@@ -13,6 +13,7 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import * as auth from '../utils/Auth';
 import Login from './Login';
+import Register from './Register';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -140,6 +141,26 @@ function App() {
     }
   }
 
+  function handleRegistration({ password, email }) {
+    auth.register({ password, email })
+      .then(() => {
+
+      })
+      .catch(() => {
+
+      })
+  }
+
+  function handleAutorisation({ password, email }) {
+    auth.authorize({ password, email })
+      .then(() => {
+
+      })
+      .catch(() => {
+
+      })
+  }
+
   useEffect(() => {
     tokenCheck();
   }, [isLoggedIn])
@@ -192,13 +213,21 @@ function App() {
           </ProtectedRoute>
           <Route path="/sign-in">
             <Login
-              name="confirmation"
               title="Вход"
               submitButton="Войти"
               valid={isValid}
+              setValid={handleValid}
+              onAuthorizeUser={handleAutorisation}
             />
           </Route>
           <Route path="/sign-up">
+            <Register
+              title="Регистрация"
+              submitButton="Зарегестрироваться"
+              valid={isValid}
+              setValid={handleValid}
+              onRegisterUser={handleRegistration}
+            />
           </Route>
         </Switch>
       </div>

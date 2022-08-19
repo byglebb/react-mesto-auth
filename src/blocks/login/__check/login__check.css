@@ -1,0 +1,13 @@
+.login__check {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #fff;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 15px;
+}

@@ -1,10 +1,10 @@
 .login__submit-button_disabled {
-  opacity: 0.2;
+  opacity: 0.4;
   color: #000;
   border: 1px solid #000000;
-  background: none;
+  background-color: #fff;
 }
 
 .login__submit-button_disabled:hover {
-  opacity: 0.2;
+  opacity: 0.4;
 }
