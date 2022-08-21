@@ -14,6 +14,7 @@ import ProtectedRoute from './ProtectedRoute';
 import * as auth from '../utils/Auth';
 import Login from './Login';
 import Register from './Register';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -26,6 +27,9 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const history = useHistory();
   const [email, setEmail] = useState('');
+
+  const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
+  const [conditionInfoTooltipPopup, setConditionInfoTooltipPopup] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -63,6 +67,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsInfoTooltipPopup(false);
     setSelectedCard(null);
     setIsValid(false);
   }
@@ -135,7 +140,6 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            // console.log(res.email);
             setEmail(res.data.email);
             history.push('/');
           }
@@ -151,9 +155,13 @@ function App() {
       .then(() => {
         history.push('./sign-in');
         // setIsLoggedIn(true);
+        setConditionInfoTooltipPopup(true);
+        setIsInfoTooltipPopup(true);
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
+        setConditionInfoTooltipPopup(false);
+        setIsInfoTooltipPopup(true);
       });
   }
 
@@ -163,11 +171,13 @@ function App() {
         if (data.token) {
           setIsLoggedIn(true);
           localStorage.setItem('token', data.token);
-          console.log(isLoggedIn);
+          setConditionInfoTooltipPopup(true);
+          setIsInfoTooltipPopup(true);
         }
       })
       .catch(() => {
-
+        setConditionInfoTooltipPopup(false);
+        setIsInfoTooltipPopup(true);
       });
   }
 
@@ -184,7 +194,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header email={email} onSignOut={handleExitProfile}/>
+        <Header email={email} onSignOut={handleExitProfile} />
         <Switch>
           <ProtectedRoute exact path="/" isLoggedIn={isLoggedIn} component={
             <>
@@ -195,7 +205,7 @@ function App() {
                 onCardClick={handleCardClick}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
-                cards={cards}/>
+                cards={cards} />
               <Footer />
               <EditProfilePopup
                 isOpen={isEditProfilePopupOpen}
@@ -211,7 +221,7 @@ function App() {
               <PopupWithForm
                 name="confirmation"
                 title="Вы уверены?"
-                submitButton="Да"/>
+                submitButton="Да" />
               <EditAvatarPopup
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
@@ -220,7 +230,7 @@ function App() {
                 setValid={handleValid} />
               <ImagePopup
                 card={selectedCard}
-                onClose={closeAllPopups}/>
+                onClose={closeAllPopups} />
             </>
           } />
           <Route path="/sign-in">
@@ -229,8 +239,11 @@ function App() {
               submitButton="Войти"
               valid={isValid}
               setValid={handleValid}
-              onLogin={handleAutorisation}
-            />
+              onLogin={handleAutorisation} />
+            <InfoTooltip
+              isOpen={isInfoTooltipPopup}
+              onClose={closeAllPopups}
+              isCondition={conditionInfoTooltipPopup} />
           </Route>
           <Route path="/sign-up">
             <Register
@@ -238,8 +251,11 @@ function App() {
               submitButton="Зарегестрироваться"
               valid={isValid}
               setValid={handleValid}
-              onRegister={handleRegistration}
-            />
+              onRegister={handleRegistration} />
+            <InfoTooltip
+              isOpen={isInfoTooltipPopup}
+              onClose={closeAllPopups}
+              isCondition={conditionInfoTooltipPopup} />
           </Route>
         </Switch>
       </div>
