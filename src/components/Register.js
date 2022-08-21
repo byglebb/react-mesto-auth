@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function Register({ onRegisterUser, valid, submitButton, title, setValid }) {
+export default function Register({ onRegister, valid, submitButton, title, setValid }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -30,9 +30,9 @@ function Register({ onRegisterUser, valid, submitButton, title, setValid }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    onRegister({ password, email });
     setEmail('');
     setPassword('');
-    onRegisterUser({ password, email });
   }
 
   useEffect(() => {
@@ -81,5 +81,3 @@ function Register({ onRegisterUser, valid, submitButton, title, setValid }) {
     </main>
   );
 }
-
-export default Register;

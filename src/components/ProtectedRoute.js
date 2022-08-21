@@ -11,4 +11,14 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
   );
 };
 
+// const ProtectedRoute = ({ component, isloggedIn }) => {
+//   return (
+//     <Route>
+//       {() =>
+//         isloggedIn ? component : <Redirect to="/sign-in" />
+//       }
+//     </Route>
+//   );
+// };
+
 export default ProtectedRoute;

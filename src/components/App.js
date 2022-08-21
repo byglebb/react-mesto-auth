@@ -25,24 +25,27 @@ function App() {
   const [isValid, setIsValid] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const history = useHistory();
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((userDataInfo) => {
-        setCurrentUser(userDataInfo);
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
+    if (isLoggedIn) {
+      api.getUserInfo()
+        .then((userDataInfo) => {
+          setCurrentUser(userDataInfo);
+        })
+        .catch((err) => {
+          console.log('Ошибка. Запрос не выполнен: ', err);
+        });
 
-    api.getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
-  }, [])
+      api.getInitialCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.log('Ошибка. Запрос не выполнен: ', err);
+        });
+    }
+  }, [isLoggedIn])
 
   function openEditProfilePopup() {
     setIsEditProfilePopupOpen(true);
@@ -126,12 +129,14 @@ function App() {
   }
 
   function tokenCheck() {
-    if (localStorage.getItem("jwt")) {
-      const jwt = localStorage.getItem("jwt");
+    if (localStorage.getItem('token')) {
+      const jwt = localStorage.getItem('token');
       auth.getContent(jwt)
-        .then(res => {
+        .then((res) => {
           if (res) {
             setIsLoggedIn(true);
+            // console.log(res.email);
+            setEmail(res.data.email);
             history.push('/');
           }
         })
@@ -142,33 +147,44 @@ function App() {
   }
 
   function handleRegistration({ password, email }) {
-    auth.register({ password, email })
+    return auth.register({ password, email })
       .then(() => {
-
+        history.push('./sign-in');
+        // setIsLoggedIn(true);
       })
-      .catch(() => {
-
-      })
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
   }
 
   function handleAutorisation({ password, email }) {
-    auth.authorize({ password, email })
-      .then(() => {
-
+    return auth.authorize({ password, email })
+      .then((data) => {
+        if (data.token) {
+          setIsLoggedIn(true);
+          localStorage.setItem('token', data.token);
+          console.log(isLoggedIn);
+        }
       })
       .catch(() => {
 
-      })
+      });
+  }
+
+  function handleExitProfile() {
+    setIsLoggedIn(false);
+    localStorage.removeItem('token');
+    history.push('/sign-in');
   }
 
   useEffect(() => {
     tokenCheck();
-  }, [isLoggedIn])
+  }, [isLoggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header email={email} onSignOut={handleExitProfile}/>
         <Switch>
           <ProtectedRoute exact path="/" isLoggedIn={isLoggedIn} component={
             <>
@@ -179,8 +195,7 @@ function App() {
                 onCardClick={handleCardClick}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
-                cards={cards}
-              />
+                cards={cards}/>
               <Footer />
               <EditProfilePopup
                 isOpen={isEditProfilePopupOpen}
@@ -196,8 +211,7 @@ function App() {
               <PopupWithForm
                 name="confirmation"
                 title="Вы уверены?"
-                submitButton="Да"
-              />
+                submitButton="Да"/>
               <EditAvatarPopup
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
@@ -206,18 +220,16 @@ function App() {
                 setValid={handleValid} />
               <ImagePopup
                 card={selectedCard}
-                onClose={closeAllPopups}
-              />
+                onClose={closeAllPopups}/>
             </>
-          }>
-          </ProtectedRoute>
+          } />
           <Route path="/sign-in">
             <Login
               title="Вход"
               submitButton="Войти"
               valid={isValid}
               setValid={handleValid}
-              onAuthorizeUser={handleAutorisation}
+              onLogin={handleAutorisation}
             />
           </Route>
           <Route path="/sign-up">
@@ -226,7 +238,7 @@ function App() {
               submitButton="Зарегестрироваться"
               valid={isValid}
               setValid={handleValid}
-              onRegisterUser={handleRegistration}
+              onRegister={handleRegistration}
             />
           </Route>
         </Switch>
