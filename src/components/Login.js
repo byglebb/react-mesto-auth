@@ -34,10 +34,6 @@ export default function Login({ title, valid, submitButton, setValid, onLogin })
     setPassword('');
   }
 
-  useEffect(() => {
-
-  }, [])
-
   return (
     <main className="content">
       <section className="login">

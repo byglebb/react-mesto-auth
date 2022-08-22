@@ -12,7 +12,7 @@ export default function Header({ email, onSignOut }) {
         <Route path='/sign-up'>
           <Link className='header__link' to='/sing-in'>Войти</Link>
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <div className='header__nav'>
             <p className='header__email'>{email}</p>
             <button className='header__button' onClick={onSignOut}>Выйти</button>

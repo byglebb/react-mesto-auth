@@ -35,10 +35,6 @@ export default function Register({ onRegister, valid, submitButton, title, setVa
     setPassword('');
   }
 
-  useEffect(() => {
-    // offValid();
-  }, [])
-
   return (
     <main className="content">
       <section className="login">

@@ -153,8 +153,7 @@ function App() {
   function handleRegistration({ password, email }) {
     return auth.register({ password, email })
       .then(() => {
-        history.push('./sign-in');
-        // setIsLoggedIn(true);
+        history.push('/sign-in');
         setConditionInfoTooltipPopup(true);
         setIsInfoTooltipPopup(true);
       })
@@ -240,10 +239,10 @@ function App() {
               valid={isValid}
               setValid={handleValid}
               onLogin={handleAutorisation} />
-            <InfoTooltip
+            {/* <InfoTooltip
               isOpen={isInfoTooltipPopup}
               onClose={closeAllPopups}
-              isCondition={conditionInfoTooltipPopup} />
+              isCondition={conditionInfoTooltipPopup} /> */}
           </Route>
           <Route path="/sign-up">
             <Register

@@ -1,5 +1,12 @@
 const BASE_URL = 'https://auth.nomoreparties.co';
 
+function handleResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export function register(objectValues) {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
@@ -9,12 +16,7 @@ export function register(objectValues) {
     },
     body: JSON.stringify(objectValues)
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 export function authorize(objectValues) {
@@ -26,12 +28,7 @@ export function authorize(objectValues) {
     },
     body: JSON.stringify(objectValues)
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 export function getContent(token) {
@@ -43,10 +40,5 @@ export function getContent(token) {
       'Authorization': `Bearer ${token}`,
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
