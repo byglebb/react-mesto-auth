@@ -70,7 +70,7 @@ export default function Register({ onRegister, valid, submitButton, title, setVa
             disabled={!validityForm()}>{submitButton}
           </button>
           <p className="login__check">Уже зарегестрированы?
-            <Link className='login__link' to="/sing-in"> Войти</Link>
+            <Link className='login__link' to="/sign-in"> Войти</Link>
           </p>
         </form>
       </section>

@@ -7,10 +7,10 @@ export default function Header({ email, onSignOut }) {
       <img className="header__logo" src={logoPath} alt="Лого хедера" />
       <Switch>
         <Route path="/sign-in">
-          <Link className='header__link' to="/sing-up">Регистрация</Link>
+          <Link className='header__link' to="/sign-up">Регистрация</Link>
         </Route>
         <Route path='/sign-up'>
-          <Link className='header__link' to='/sing-in'>Войти</Link>
+          <Link className='header__link' to='/sign-in'>Войти</Link>
         </Route>
         <Route exact path="/">
           <div className='header__nav'>

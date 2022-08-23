@@ -153,9 +153,9 @@ function App() {
   function handleRegistration({ password, email }) {
     return auth.register({ password, email })
       .then(() => {
-        history.push('/sign-in');
         setConditionInfoTooltipPopup(true);
         setIsInfoTooltipPopup(true);
+        // history.push('/sign-in');
       })
       .catch((err) => {
         console.log('Ошибка. Запрос не выполнен: ', err);
@@ -170,8 +170,8 @@ function App() {
         if (data.token) {
           setIsLoggedIn(true);
           localStorage.setItem('token', data.token);
-          setConditionInfoTooltipPopup(true);
-          setIsInfoTooltipPopup(true);
+          // setConditionInfoTooltipPopup(true);
+          // setIsInfoTooltipPopup(true);
         }
       })
       .catch(() => {
@@ -239,10 +239,10 @@ function App() {
               valid={isValid}
               setValid={handleValid}
               onLogin={handleAutorisation} />
-            {/* <InfoTooltip
+            <InfoTooltip
               isOpen={isInfoTooltipPopup}
               onClose={closeAllPopups}
-              isCondition={conditionInfoTooltipPopup} /> */}
+              isCondition={conditionInfoTooltipPopup} />
           </Route>
           <Route path="/sign-up">
             <Register
